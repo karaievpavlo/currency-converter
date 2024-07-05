@@ -1,0 +1,87 @@
+<div *ngIf="{
+  currencies: currencies$ | async,
+  baseCurrency: baseCurrency$ | async,
+  targetCurrency: targetCurrency$ | async,
+  baseAmountCurrency: baseAmountCurrency$ | async,
+  targetAmountCurrency: targetAmountCurrency$ | async
+} as data"
+ class="grid align-items-center m-0 w-full"
+>
+  <div class="col-12 lg:col-5 flex align-items-center justify-content-center lg:justify-content-start">
+    <p-dropdown
+      [options]="data?.currencies"
+      [ngModel]="data?.baseCurrency"
+      (ngModelChange)="onBaseCurrencyChange($event)"
+      optionLabel="name"
+      [filter]="true"
+      filterBy="name">
+        <ng-template pTemplate="selectedItem" let-selectedOption>
+            <div class="flex align-items-center gap-2">
+                <img 
+                    src="assets/img/flag_placeholder.png"
+                    [class]="'flag flag-' + data?.baseCurrency?.name?.slice(0, -1)?.toLowerCase()"
+                    style="width: 18px" />
+                <span>{{ selectedOption.name }}</span>
+            </div>
+        </ng-template>
+        <ng-template let-currency pTemplate="item">
+            <div class="flex align-items-center gap-2">
+                <img 
+                    src="assets/img/flag_placeholder.png"
+                    [class]="'flag flag-' + currency.name?.slice(0, -1).toLowerCase()"
+                    style="width: 18px" />
+                <span>{{ currency.name }}</span>
+            </div>
+        </ng-template>
+    </p-dropdown>
+    <p-inputNumber 
+        [ngModel]="data?.baseCurrency?.value"
+        (ngModelChange)="onBaseAmountChange($event)"
+        mode="decimal"
+        class="ml-3"
+        [min]="1" 
+        [minFractionDigits]="2" 
+        [maxFractionDigits]="2" />
+  </div>
+
+  <div class="col-12 lg:col-2 flex justify-content-center">
+    <span class="pi pi-arrow-right-arrow-left"></span>
+  </div>
+
+  <div class="col-12 lg:col-5 flex align-items-center justify-content-center lg:justify-content-end">
+    <p-inputNumber 
+        [ngModel]="data?.targetCurrency?.value"
+        (ngModelChange)="onTargetAmountChange($event)"
+        mode="decimal"
+        class="mr-3"
+        [minFractionDigits]="2" 
+        [maxFractionDigits]="5" />
+
+    <p-dropdown
+        [options]="data?.currencies"
+        [ngModel]="data?.targetCurrency"
+        (ngModelChange)="onTargetCurrencyChange($event)"
+        optionLabel="name"
+        [filter]="true"
+        filterBy="name">
+        <ng-template pTemplate="selectedItem" let-selectedOption>
+            <div class="flex align-items-center gap-2">
+                <img 
+                    src="assets/img/flag_placeholder.png"
+                    [class]="'flag flag-' + selectedOption?.name?.slice(0, -1)?.toLowerCase()"
+                    style="width: 18px" />
+                <span>{{ selectedOption.name }}</span>
+            </div>
+        </ng-template>
+        <ng-template let-currency pTemplate="item">
+            <div class="flex align-items-center gap-2">
+                <img 
+                    src="assets/img/flag_placeholder.png"
+                    [class]="'flag flag-' + currency.name?.slice(0, -1).toLowerCase()"
+                    style="width: 18px" />
+                <span>{{ currency.name }}</span>
+            </div>
+        </ng-template>
+    </p-dropdown>
+  </div>
+</div>

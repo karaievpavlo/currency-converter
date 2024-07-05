@@ -1,0 +1,45 @@
+<p-toolbar styleClass="border-noround">
+  <div class="p-toolbar-group-start">
+    <div class="text-3xl font-medium text-900 sm:m-0 mb-3">Currency Converter</div>
+  </div>
+  <div class="p-toolbar-group-center"></div>
+  <div class="p-toolbar-group-end justify-content-end w-full sm:w-auto"
+    *ngIf="{
+      currencies: currencies$ | async,
+      selectedCurrency: selectedCurrency$ | async,
+      selectedUAH: selectedUAH$ | async
+    } as data">
+    <p-chip styleClass="p-3 mr-2">
+      <img src="assets/img/flag_placeholder.png"
+        class="flag flag-ua ml-0"
+        style="width: 18px; height: 12.27px; border-radius: 0;" />
+        <span class="font-medium">{{ data?.selectedUAH?.value | number : '1.0-2' | currency:"UAH":"symbol-narrow"  }}</span>
+    </p-chip>
+    <p-dropdown
+        [options]="data?.currencies"
+        [ngModel]="data?.selectedCurrency"
+        (ngModelChange)="changeCurrency($event)"
+        optionLabel="name"
+        [filter]="true"
+        filterBy="name">
+          <ng-template pTemplate="selectedItem" let-selectedOption>
+              <div class="flex align-items-center gap-2">
+                  <img 
+                      src="assets/img/flag_placeholder.png"
+                      [class]="'flag flag-' + selectedOption?.name?.slice(0, -1)?.toLowerCase()"
+                      style="width: 18px" />
+                  <span>{{ selectedOption.name }}</span>
+              </div>
+          </ng-template>
+          <ng-template let-currency pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                  <img 
+                      src="assets/img/flag_placeholder.png"
+                      [class]="'flag flag-' + currency.name?.slice(0, -1).toLowerCase()"
+                      style="width: 18px" />
+                  <span>{{ currency.name }}</span>
+              </div>
+          </ng-template>
+    </p-dropdown>
+  </div>
+</p-toolbar>
